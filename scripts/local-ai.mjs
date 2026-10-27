@@ -3,7 +3,7 @@ import os from 'node:os';
 import {spawn} from 'node:child_process';
 import {randomBytes} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-import {checkedReflection} from './reflection-quality.mjs';
+import {writeReflection} from '../dist/coach.js';
 const local=file=>fileURLToPath(new URL(`../.local/ai/${file}`,import.meta.url));
 // Largest first. The 7B model needs ~6 GB of free memory and a reasonably quick machine; slower computers keep the 1.5B model.
 const models=[
@@ -44,38 +44,11 @@ export function startLocalAI({port=4174}={}){
   async generate(summary){
    if(busy)throw new Error('The local model is already writing a review. Please try again shortly.');busy=true;
    try{
-    // Only calculated facts are provided: no emails, notes or raw journal text. The model runs on this machine, so exercise names stay readable.
-    // A 1.5B model mixes topics and garbles numbers in one long answer, so each paragraph gets its own narrow prompt.
-    const u=summary.unit,w=summary.weight,food=summary.nutrition,signed=n=>`${n>0?'+':''}${n}`;
-    const set=s=>`${s.load?`${s.load} ${u}`:'bodyweight'} x ${s.reps} reps`;
-    const results={up:'progressed',steady:'held steady',down:'slightly down',new:'first time logged in 8 weeks, nothing to compare yet',mixed:'cannot be compared with last time'};
-    // New exercises get one line of their own; listed with the others, the model tends to call them progress.
-    const fresh=summary.exercises.filter(e=>e.signal==='new').map(e=>e.name.slice(0,60));
-    const exercises=[...summary.exercises.filter(e=>e.signal!=='new').slice(0,12).map(e=>`${e.name.slice(0,60)}: ${results[e.signal]}. Best set this week ${set(e.current)}${e.previous?`, last time ${set(e.previous)} (${e.detail.toLowerCase()})`:''}.${e.trend?.pct!=null?` Estimated max ${signed(e.trend.pct)}% over the last few weeks.`:''}${e.stall?` No new best in ${e.stall.weeks} weeks.`:''}${e.volume.change!==null?` Weekly volume ${signed(e.volume.change)}%.`:''}`),...fresh.length?[`New this week, with no earlier session to compare: ${fresh.join(', ')}.`]:[]].join('\n')||'No exercises were logged this week.';
-    const training=`Workouts this week: ${summary.workouts} (last week: ${summary.previousWorkouts}).\n${exercises}`;
-    const nextSteps={up:'keep the same approach, adding a rep or the smallest weight increment when the last set feels manageable',steady:'try adding a rep, or the smallest available weight increment, once form feels solid',down:'check sleep and recovery, then rebuild toward the previous result',new:'log it again with a similar rep range so progress can be compared',mixed:'keep a similar rep range next time so it can be compared'};
-    const plan=summary.exercises.slice(0,12).map(e=>`${e.name.slice(0,60)}: ${e.stall?`no new best in ${e.stall.weeks} weeks, so change one thing, such as an extra rep per set, a different rep range, or more recovery`:nextSteps[e.signal]}.`).join('\n')||'No exercises were logged this week: log a workout so progress can be compared.';
-    const bodyweight=[
-     w.change===null?'Not enough weigh-ins to compare this week with last week.':`Average bodyweight changed ${signed(w.change)} ${u} this week (${signed(w.rate)}% of bodyweight), from ${w.previous.average} to ${w.current.average} ${u}.`,
-     w.trend&&`Four-week trend: ${signed(w.trend.perWeek)} ${u} per week (${signed(w.trend.pct)}% of bodyweight per week).${w.trend.pct<-1?' That is faster than the roughly 0.5–1% per week often suggested for keeping muscle.':''}`,
-     w.goal&&(w.goal.reached?`Goal of ${w.goal.target} ${u} reached.`:`${Math.abs(w.goal.remaining)} ${u} left to the goal of ${w.goal.target} ${u}${w.goal.eta?`, on pace for ${new Date(`${w.goal.eta}T12:00:00`).toLocaleDateString('en-US',{month:'long',day:'numeric'})}`:w.goal.status==='away'?', but the trend is moving away from it':''}.`),
-     food.current.days?`Calories were logged on ${food.current.days} of 7 days, averaging ${food.current.average} kcal per logged day${food.current.low?`; ${food.current.low} of those days were under 1,000 kcal and may be incomplete`:''}.`:'No calories were logged this week.',
-     food.maintenance&&`Rough maintenance estimate from four weeks of intake and weight trend: ${food.maintenance} kcal per day.`
-    ].filter(Boolean).join(' ');
-    const rules=' Address the user as "you"; never write as "I". Use only the facts given and copy numbers exactly. Logged calories may be incomplete; never describe intake as appropriate, adequate, healthy, safe, sufficient, or moderate. Do not judge whether the user eats enough or prescribe food restriction. Write complete sentences as one short paragraph: no headings, lists, numbering, or markdown.';
-    const ask=async(task,facts,maxTokens,fallback)=>{
-     const response=await fetch(endpoint+'/v1/chat/completions',{method:'POST',headers,signal:AbortSignal.timeout(90000),body:JSON.stringify({model:'local',temperature:0.2,max_tokens:maxTokens,messages:[{role:'system',content:task+rules},{role:'user',content:facts}]})});
+    return await writeReflection(summary,async({system,user,maxTokens})=>{
+     const response=await fetch(endpoint+'/v1/chat/completions',{method:'POST',headers,signal:AbortSignal.timeout(90000),body:JSON.stringify({model:'local',temperature:0.2,max_tokens:maxTokens,messages:[{role:'system',content:system},{role:'user',content:user}]})});
      if(!response.ok)throw new Error('Local AI is still loading or unavailable. Try again in a moment.');
-     const raw=(await response.json()).choices?.[0]?.message?.content||'';
-     return checkedReflection(raw,facts,fallback);
-    };
-    // Small models still emit markdown occasionally; the page renders plain text.
-    const paragraphs=[
-     summary.exercises.length?await ask('You are a supportive strength coach. In two to four sentences, summarise this week\'s training for progressive overload: name the exercises that progressed, held steady, slipped, or have stalled, and mention multi-week trends where given. Do not mention bodyweight.',training,200,summary.facts.filter(f=>/improved|No new best|earlier session/.test(f)).join(' ')||exercises.replace(/\n/g,' ')):'No exercises were logged in this window, so training progress cannot be assessed yet.',
-     food.current.low?`${bodyweight} Recorded food may be incomplete; these entries do not establish your full intake.`:await ask('You are a supportive coach. In two or three sentences, describe the bodyweight trend and recorded calorie figures in neutral terms, using the numbers given. Mention the goal only if one is given. Scale weight is not the same as fat loss. Do not mention training, and never suggest a calorie target or a new goal.',bodyweight,170,bodyweight),
-     await ask('You are a supportive strength coach. Turn this plan for next week into two or three friendly sentences, keeping each exercise paired with its own step. Never add exact weights or calorie targets.',plan,130,`Next week: ${plan.replace(/\n/g,' ')}`)
-    ].filter(Boolean);
-    if(!paragraphs.length)throw new Error('The local model returned no feedback. Please try again.');return paragraphs.join('\n\n').slice(0,5000);
+     return (await response.json()).choices?.[0]?.message?.content;
+    });
    }catch(error){throw new Error(error.name==='TimeoutError'?'The local model took too long. Your calculated review is still available.':error.message);}
    finally{busy=false;}
   },stop(){stopped=true;child.kill();}

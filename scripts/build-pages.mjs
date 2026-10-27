@@ -1,0 +1,27 @@
+import fs from 'node:fs';
+const source=new URL('../dist/',import.meta.url),target=new URL('../docs/',import.meta.url);
+fs.mkdirSync(target,{recursive:true});
+for(const entry of fs.readdirSync(source,{withFileTypes:true}))if(entry.isFile())fs.copyFileSync(new URL(entry.name,source),new URL(entry.name,target));
+for(const file of ['device-store.js','persistence.js','account.js','web-coach.js'])fs.copyFileSync(new URL(`../pages-src/${file}`,import.meta.url),new URL(file,target));
+fs.mkdirSync(new URL('data/',target),{recursive:true});fs.copyFileSync(new URL('../data/foods.json',import.meta.url),new URL('data/foods.json',target));
+for(const file of ['index.html','weight.html','food.html','lifts.html','review.html']){
+ let html=fs.readFileSync(new URL(file,target),'utf8');
+ html=html.replaceAll('7,793 FOODS · OFFLINE','7,793 FOODS · INCLUDED').replaceAll('Your personal journal','Your journal, this browser').replaceAll('Entries are saved to your signed-in account on this server.','Saved on this device. Export a backup before clearing browser data.').replaceAll('Your journal is saved to your account on this server.','Your journal stays in this browser. Use Backups to export or restore it.').replaceAll('>Sign out</button>','>Backups</button>');
+ html=html.replace('<div id="storage-error"','<p class="device-notice">Free browser edition · No sign-in needed. Your entries stay on this device; use Backups to move them.</p><div id="storage-error"');
+ if(file==='review.html'){
+  html=html.replaceAll('Your local AI coach','Your AI coach').replaceAll('Qwen 2.5 runs alongside steadily on the app server. No paid AI API or credits. Uses the server’s CPU and memory.','Qwen 2.5 runs inside your browser on this device’s graphics chip. Free, no account, and your journal never leaves this device. The first reflection downloads about 1 GB of model files; later visits reuse the browser’s copy.').replaceAll('AI feedback can be mistaken. Use the calculated figures as your reference. This is general fitness feedback, not medical advice.','AI feedback can be mistaken. Use the calculated figures as your reference. Browsers without WebGPU get a calculated reflection instead. This is general fitness feedback, not medical advice.');
+ }
+ fs.writeFileSync(new URL(file,target),html);
+}
+let app=fs.readFileSync(new URL('app.js',target),'utf8');
+app=app.replace('Your account journal is unavailable. Please sign in again or check the server, then retry. Your form has been kept.','Your device journal is unavailable. Check browser storage permissions and reload. Your form has been kept.').replaceAll('Account changed in another tab. Reload before continuing.','Your device journal changed. Reload before continuing.').replaceAll('Previous entries copied to your account. The original browser copy has been kept.','Previous entries copied to this device journal. The original browser copy has been kept.').replaceAll('Copy this browser’s journal into your account.','Copy this browser’s older journal into this edition.').replaceAll('Copy this browser’s previous entries into ${currentUser.email}?','Copy your older browser entries into this device journal?');
+app=app.replaceAll('Have entries from before sign-in?','Have entries from the older browser edition?');
+fs.writeFileSync(new URL('app.js',target),app);
+let review=fs.readFileSync(new URL('review-page.js',target),'utf8');
+review=review.replace("result.aiReady?'Local model ready.':'Local model is starting or unavailable. You can retry shortly.'","result.aiReady?'AI coach ready. The first reflection downloads the model, which can take a few minutes.':'This browser has no WebGPU, so you will get a calculated reflection. Recent Chrome or Edge on a laptop or desktop can run the AI coach.'").replace('Writing on your computer… this may take a moment.','Loading the AI coach…');
+fs.writeFileSync(new URL('review-page.js',target),review);
+fs.writeFileSync(new URL('signin.js',target),'location.replace(new URL("index.html",location.href));\n');
+fs.writeFileSync(new URL('signin.html',target),'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your journal · steadily</title><link rel="stylesheet" href="styles.css"></head><body class="auth-page"><main class="auth-card"><span class="brand">steadily.</span><h1>No account needed.</h1><p>This free edition keeps your journal in this browser. It does not use email addresses or passwords.</p><a class="button primary" href="index.html">Open your journal →</a></main></body></html>');
+fs.appendFileSync(new URL('styles.css',target),'\n.device-notice{font-size:12px;color:var(--muted);background:#edf2e6;border:1px solid var(--line);border-radius:8px;padding:12px 15px;margin:0 0 22px}.backup-dialog{border:1px solid var(--control);border-radius:16px;padding:28px;max-width:min(530px,90vw);color:var(--ink);font-family:var(--sans)}.backup-dialog::backdrop{background:#203a3180}.backup-dialog h2{font-family:var(--serif);font-size:27px;font-weight:400;margin:0 0 15px}.backup-dialog p{font-size:14px;line-height:1.7}.backup-dialog label{display:block;font-size:14px;font-weight:600;margin:22px 0 8px}.backup-dialog input{display:block;max-width:100%;margin:0 0 18px}.backup-dialog button{margin-right:10px}.backup-dialog [role=status]{min-height:24px}\n');
+fs.writeFileSync(new URL('.nojekyll',target),'');
+console.log('Built GitHub Pages edition in docs/.');

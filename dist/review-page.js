@@ -62,6 +62,8 @@ async function update(){
   $('review-status').textContent='Review updated.';$('generate-review').disabled=false;$('ai-status').textContent=result.aiReady?'Local model ready.':'Local model is starting or unavailable. You can retry shortly.';
  }catch(error){if(id===requestId)$('review-status').textContent=error.message;}
 }
+// The GitHub Pages edition reports model download and loading progress here.
+document.addEventListener('steadily-ai-progress',event=>{$('ai-status').textContent=event.detail;});
 $('review-filter').onsubmit=event=>{event.preventDefault();update();};
 $('goal-form').onsubmit=event=>{event.preventDefault();const weight=Number($('goal-weight').value);if(!$('goal-weight').value||!Number.isFinite(weight)){$('settings-status').textContent='Enter a goal weight.';$('goal-weight').focus();return;}save({...settings,goal:{weight,unit:$('goal-unit').value}},'Goal saved.');};
 $('clear-goal').onclick=()=>save({...settings,goal:null},'Goal removed.');

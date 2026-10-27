@@ -4,6 +4,8 @@ node_modules/
 *.tgz
 qa/
 .local/
+.openai/
+.claude/
 .env
 .env.*
 !.env.example
