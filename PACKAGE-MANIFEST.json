@@ -1,0 +1,245 @@
+{
+  "created": "2026-10-27",
+  "files": [
+    {
+      "file": ".env.example",
+      "bytes": 428,
+      "sha256": "8a9be4c5718e51ded29793216612e6d24b5eed1e4221f1b9fdec18da30ef4774"
+    },
+    {
+      "file": ".github/workflows/check.yml",
+      "bytes": 269,
+      "sha256": "3cf32177494edfd63971d7ce166a6e64ce59723d56ae3723b3e917959b6ed76e"
+    },
+    {
+      "file": ".gitignore",
+      "bytes": 110,
+      "sha256": "1a7b4c930e87328241e9982e1d5117e3581ead35a3b6935ec16ddc9398d2cba6"
+    },
+    {
+      "file": "AUTH.md",
+      "bytes": 3237,
+      "sha256": "d4ea9051057b312272ebe0adf7f889c568945f5c6788ff8a792c69da104588b5"
+    },
+    {
+      "file": "data/foods.json",
+      "bytes": 1639018,
+      "sha256": "4b6c495140116573c0c3315c217e7a3dde2eb20c28f07f5b49fd3fdc1068e779"
+    },
+    {
+      "file": "dist/account.js",
+      "bytes": 1382,
+      "sha256": "28e18ff3d20fda722a2291ea5fc7fc034d47e54eb8fc0a121fbb4716cc0e2bac"
+    },
+    {
+      "file": "dist/app.js",
+      "bytes": 20044,
+      "sha256": "1082cb73511870aa9acfa4c692679fdf75879ac9a01ce32a9a7d9f1ee96385dd"
+    },
+    {
+      "file": "dist/data.js",
+      "bytes": 3320,
+      "sha256": "fe36f9053f9d57dd5d5457a59966b082003fac9fb21e7ae0789ae3340d3f4319"
+    },
+    {
+      "file": "dist/favicon.svg",
+      "bytes": 252,
+      "sha256": "3dc45dccb128ea5f34479b363b9cb031f1930bf383f6f3015c5e38bee63e17b1"
+    },
+    {
+      "file": "dist/food-library.js",
+      "bytes": 8453,
+      "sha256": "6f0834d78f92ed605e249fdacc4fcef32b9a785129d11fb080e2efd158aac37a"
+    },
+    {
+      "file": "dist/food.html",
+      "bytes": 13096,
+      "sha256": "b1f384293bc6399c34a9962afb6246b7e08df24fea8c6cc8680b5b428857c238"
+    },
+    {
+      "file": "dist/index.html",
+      "bytes": 9545,
+      "sha256": "dc49d57c624ddb530065dfc4afae5544bcce746a6187d91123f9c00b1dd79c17"
+    },
+    {
+      "file": "dist/insights.js",
+      "bytes": 13286,
+      "sha256": "1219c27404ae622365748b2735213666ab3811c0756e272c846146fa84069478"
+    },
+    {
+      "file": "dist/lifts.html",
+      "bytes": 8794,
+      "sha256": "c7773dbfc234cfb7f3ecccd443e36c418a0d2a316b211c3a02a9eec632dae022"
+    },
+    {
+      "file": "dist/nutrition.js",
+      "bytes": 1633,
+      "sha256": "fa81ceec447a3aae7f1ff8f861fe03c4ab402e7ab1f6b4627fe04ce4ac830370"
+    },
+    {
+      "file": "dist/review-page.js",
+      "bytes": 8587,
+      "sha256": "1d523caeac16d3e9fc3537e55344a886e08db4dd18d8936c123ed64dee0a2805"
+    },
+    {
+      "file": "dist/review.html",
+      "bytes": 9449,
+      "sha256": "bf810683afc194fe295f232396cbfb44f6b42fe6e44d99486ba0fffbe29773a2"
+    },
+    {
+      "file": "dist/signin.html",
+      "bytes": 2299,
+      "sha256": "6e4557687a7d593828fbff7c3f91c275f09ed0cefc0c43651e70883c2053cdaa"
+    },
+    {
+      "file": "dist/signin.js",
+      "bytes": 1666,
+      "sha256": "9d3a7b39f8a7521510b69da32553183aa8b3d13b396368b97f68428baebae1b4"
+    },
+    {
+      "file": "dist/styles.css",
+      "bytes": 28241,
+      "sha256": "d8219b5bba80704da8e3583eb8e60b47851fce2d145b37d87032cdc489fbfc0c"
+    },
+    {
+      "file": "dist/weight.html",
+      "bytes": 8804,
+      "sha256": "f419366427ca9f804ed87ce84e06ada8fe1692b09585692e100f67d0b70fc94a"
+    },
+    {
+      "file": "dist/workout-data.js",
+      "bytes": 1828,
+      "sha256": "34b3e28cc35b47bb6e3a50ba1246eca4e1033896c59bf2402f8dbc259113ebbb"
+    },
+    {
+      "file": "dist/workouts.js",
+      "bytes": 12332,
+      "sha256": "59f469caa6974fb03b792547551e49dc3efb581a4eda1d7f52784bd243e0f753"
+    },
+    {
+      "file": "HOSTING.md",
+      "bytes": 6619,
+      "sha256": "c385b6edb8e9a0eb32015671668b99b22c76f790105d2f99672379c56c4c50d0"
+    },
+    {
+      "file": "package.json",
+      "bytes": 259,
+      "sha256": "b404558804001ce0fb6819ae49c7d30bf25f1a0d9719d159d2dc8c0260ddd5c9"
+    },
+    {
+      "file": "README.md",
+      "bytes": 8117,
+      "sha256": "c072b156ec43ebbe464b3726be98ca7a28c73874dd0b8abebc1a67d46f6171d3"
+    },
+    {
+      "file": "render.yaml",
+      "bytes": 527,
+      "sha256": "f1ea4105d1d5777fb7c4e577e2a32404c58ab6040ee8594902a8fbedc8b75521"
+    },
+    {
+      "file": "REVIEW-REPORT.md",
+      "bytes": 4870,
+      "sha256": "b5fe7227ac54a9e9b75bda3f3c7b8d6de3bbec08598a14078d975069952aef45"
+    },
+    {
+      "file": "scripts/auth-server.mjs",
+      "bytes": 9029,
+      "sha256": "f5fb32976ff74d276bfbdc3d5acdbd4bc4bc7e25b8d31df170eed10e3288e2b8"
+    },
+    {
+      "file": "scripts/build-food-catalog.mjs",
+      "bytes": 1766,
+      "sha256": "ba4ba597eef10f7830a198357f72556ebad154cf8fb8f382820ce405dfe93b0b"
+    },
+    {
+      "file": "scripts/check.mjs",
+      "bytes": 577,
+      "sha256": "bd0747189ca65a7b44d2ff2e3ec9a331ec2f6c312719f40944c6f028b2398818"
+    },
+    {
+      "file": "scripts/create-pages.mjs",
+      "bytes": 12882,
+      "sha256": "74281bfba3f44bf3f14e2d9521661263e4ed8e500aef7419a64020c60e330cab"
+    },
+    {
+      "file": "scripts/features.mjs",
+      "bytes": 5089,
+      "sha256": "9bb34284859ec0b895581fa8609f5fab917ccf027e030ab21fff92f0615256bc"
+    },
+    {
+      "file": "scripts/food-template.mjs",
+      "bytes": 3044,
+      "sha256": "6063a963c19fa893cfb626136efc2c2e132b1e36cf2ec29fb54c80e9445cf349"
+    },
+    {
+      "file": "scripts/local-ai.mjs",
+      "bytes": 9878,
+      "sha256": "e22188a17c957fd346e015f72c1747ec6efa52f4066dc03d041c295b4bc072d0"
+    },
+    {
+      "file": "scripts/package-source.mjs",
+      "bytes": 1886,
+      "sha256": "b5d335d169cf3631fa7413f926fe6c6db57dcbfe5af86480f2e7885804be353f"
+    },
+    {
+      "file": "scripts/reflection-quality.mjs",
+      "bytes": 891,
+      "sha256": "8979b0ecca1bce0a3e82f8ff4a55622d694132ac3c21ece644299880457c6fce"
+    },
+    {
+      "file": "scripts/review-template.mjs",
+      "bytes": 3926,
+      "sha256": "37ab80fa3622af8dc4f8d3021a8f20d137b1e2aaa3c1c7b3e8453ca63ae57e4b"
+    },
+    {
+      "file": "scripts/serve.mjs",
+      "bytes": 1173,
+      "sha256": "8f680069816cc3758c3779bf31c2bb55ad03d1d9458e2ecb29d35b82001be4ae"
+    },
+    {
+      "file": "scripts/setup-ai.mjs",
+      "bytes": 3221,
+      "sha256": "b3a8dbff40006e2aded1caac371d2ffe0368131609256bf1bf1fde9f300db7cd"
+    },
+    {
+      "file": "scripts/workout-template.mjs",
+      "bytes": 3283,
+      "sha256": "2e248336a52fdc3c1b9ba1db780fa564829d3a0c081e6846fdc26afe9e68240a"
+    },
+    {
+      "file": "tests/auth.test.mjs",
+      "bytes": 5315,
+      "sha256": "5e86245422ebf8f1ff2d439e5c5775f4f3ef0209c6a993dff50edb272eb2b909"
+    },
+    {
+      "file": "tests/data.test.mjs",
+      "bytes": 3434,
+      "sha256": "6fc21d8387c71388990b05caa13353fcfe8abe7de0205a7f8a02e9708da53d7e"
+    },
+    {
+      "file": "tests/hosting.test.mjs",
+      "bytes": 1284,
+      "sha256": "c2542ffd0797a680ba0eb7d0e8e93f794c7ccdc342057bc08c80caeea3dbf675"
+    },
+    {
+      "file": "tests/insights.test.mjs",
+      "bytes": 6201,
+      "sha256": "908565caca386c851236348c779b8ba28f0522729606e1cf742a1ef05d5c822e"
+    },
+    {
+      "file": "tests/review-quality.test.mjs",
+      "bytes": 976,
+      "sha256": "ff7d6f6c83e9cf1ffb873ae16175e6ab61f4a23a66f45eca1f6f85bbe4c89780"
+    },
+    {
+      "file": "tests/workouts.test.mjs",
+      "bytes": 2399,
+      "sha256": "03b74af76feb81c24d6be7c83528e20a45760ccf22e573fe9dccd4b865d5aab8"
+    },
+    {
+      "file": "USABILITY.md",
+      "bytes": 3878,
+      "sha256": "072cf929ac0212108c394d0aa56e6f18148636f2f493853c574982178015d6e5"
+    }
+  ]
+}
